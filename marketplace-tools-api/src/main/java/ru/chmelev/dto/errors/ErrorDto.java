@@ -1,4 +1,4 @@
-package ru.chmelev.dto;
+package ru.chmelev.dto.errors;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
