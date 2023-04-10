@@ -1,4 +1,4 @@
-package ru.chmelev.dto.marketplace;
+package ru.chmelev.dto.marketplace.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
