@@ -1,16 +1,17 @@
 package ru.chmelev.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import ru.chmelev.dto.users.UsersRequestDto;
-import ru.chmelev.dto.users.response.User;
-import ru.chmelev.dto.users.response.UserFavoritesMarketplaceResponseDto;
+import ru.chmelev.dto.users.Users;
+import ru.chmelev.dto.users.request.UsersRequestDto;
+import ru.chmelev.dto.users.response.UsersFavoritesMarketplaceResponseDto;
 import ru.chmelev.dto.users.response.UsersResponseDto;
 import ru.chmelev.entity.Marketplace;
-import ru.chmelev.entity.Users;
+import ru.chmelev.entity.User;
 import ru.chmelev.exception.NoFoundException;
 import ru.chmelev.repositoriy.MarketplaceRepository;
-import ru.chmelev.repositoriy.UsersRepositories;
+import ru.chmelev.repositoriy.UserRepositories;
 import ru.chmelev.service.UsersService;
 
 import java.time.LocalDateTime;
@@ -19,36 +20,39 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class UsersServiceImpl implements UsersService {
     private final MarketplaceRepository marketplaceRepository;
-    private final UsersRepositories usersRepositories;
+    private final UserRepositories userRepositories;
     private final ModelMapper modelMapper;
 
-    public UsersServiceImpl(MarketplaceRepository marketplaceRepository, UsersRepositories usersRepositories,
+    public UsersServiceImpl(MarketplaceRepository marketplaceRepository, UserRepositories userRepositories,
                             ModelMapper modelMapper) {
         this.marketplaceRepository = marketplaceRepository;
-        this.usersRepositories = usersRepositories;
+        this.userRepositories = userRepositories;
         this.modelMapper = modelMapper;
     }
 
     @Override
-    public User createUsers(UsersRequestDto usersRequestDto) {
-        Users save;
+    public Users createUsers(UsersRequestDto usersRequestDto) {
+        User save;
         if (Objects.equals(null,usersRequestDto.getMarketplaces())){
-            Users forSave = getUserForSave(usersRequestDto);
-            save = usersRepositories.save(forSave);
+            log.info("Создание пользователя без маркетплейса");
+            User forSave = getUserForSave(usersRequestDto);
+            save = userRepositories.save(forSave);
             return modelMapper.map(save,UsersResponseDto.class);
         }
             List<Marketplace> allById = marketplaceRepository.findAllById(usersRequestDto.getMarketplaces());
-            Users forSave = getUserForSave(usersRequestDto);
+            log.info("Создание пользователя с маркетплейсом");
+            User forSave = getUserForSave(usersRequestDto);
             forSave.setMarketplaces(allById);
-            save = usersRepositories.save(forSave);
+            save = userRepositories.save(forSave);
 
-        return modelMapper.map(save,UserFavoritesMarketplaceResponseDto.class);
+        return modelMapper.map(save, UsersFavoritesMarketplaceResponseDto.class);
 
     }
-    private Users getUserForSave(UsersRequestDto usersRequestDto){
-        Users forSave = modelMapper.map(usersRequestDto, Users.class);
+    private User getUserForSave(UsersRequestDto usersRequestDto){
+        User forSave = modelMapper.map(usersRequestDto, User.class);
         forSave.setDateCreate(LocalDateTime.now());
         forSave.setDateUpdate(LocalDateTime.now());
         return forSave;
@@ -56,62 +60,64 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public UsersResponseDto readById(Long id) {
-        Optional<Users>byId = usersRepositories.findById(id);
-        Users foundUsers = byId
+        Optional<User>byId = userRepositories.findById(id);
+        User foundUser = byId
                 .orElseThrow(()->new NoFoundException(String.format("Пользоватедь не найден по данному %d",id)));
-        return modelMapper.map(foundUsers,UsersResponseDto.class);
+        return modelMapper.map(foundUser,UsersResponseDto.class);
     }
 
     @Override
     public void deleteById(Long id) {
-        usersRepositories.findById(id)
+        userRepositories.findById(id)
                 .orElseThrow(()->new NoFoundException(String.format("Пользоватедь не найден по данному %d",id)));
-        usersRepositories.deleteById(id);
+        userRepositories.deleteById(id);
 
     }
 
     @Override
     public UsersResponseDto update(Long id, UsersRequestDto usersRequestDto) {
-        Users beforeUpdate = usersRepositories.findById(id)
+        User beforeUpdate = userRepositories.findById(id)
                 .orElseThrow(() -> new NoFoundException(String.format("Пользоватедь не найден по данному %d", id)));
-        Users forUpdate = modelMapper.map(usersRequestDto, Users.class);
+        User forUpdate = modelMapper.map(usersRequestDto, User.class);
         forUpdate.setDateCreate(beforeUpdate.getDateCreate());
         forUpdate.setDateUpdate(LocalDateTime.now());
         forUpdate.setId(beforeUpdate.getId());
-        Users save = usersRepositories.save(forUpdate);
+        User save = userRepositories.save(forUpdate);
 
         return modelMapper.map(save,UsersResponseDto.class);
     }
 
     @Override
     public List<UsersResponseDto> readAll(String filter) {
-        List<Users>list;
+        List<User>list;
         if (Objects.equals(filter,"")){
-            list = usersRepositories.findAll();
+            list = userRepositories.findAll();
         }else {
             String postgresLike = "%%%s%%".formatted(filter);
-            list = usersRepositories.findAllByFirstNameLikeIgnoreCaseOrLastNameLikeIgnoreCase(postgresLike,postgresLike);
+            list = userRepositories.findAllByFirstNameLikeIgnoreCaseOrLastNameLikeIgnoreCase(postgresLike,postgresLike);
         }
         return list.stream()
                 .map(i->modelMapper.map(i,UsersResponseDto.class))
                 .toList();
+
+
     }
 
 
     @Override
     public UsersResponseDto readByUserName(String userName) {
-        Users byUserName = usersRepositories.findByUserName(userName);
+        User byUserName = userRepositories.findByUserName(userName);
         return modelMapper.map(byUserName,UsersResponseDto.class);
     }
 
     @Override
-    public UserFavoritesMarketplaceResponseDto addMarketplace(Long userId, Long marketplaceId) {
+    public UsersFavoritesMarketplaceResponseDto addMarketplace(Long userId, Long marketplaceId) {
         Marketplace marketplace = marketplaceRepository.findById(marketplaceId)
                 .orElseThrow(() -> new NoFoundException(String.format("Маркетплейс не найден по данному %d", marketplaceId)));
-        Users user = usersRepositories.findById(userId)
+        User user = userRepositories.findById(userId)
                 .orElseThrow(() -> new NoFoundException(String.format("Пользоватедь не найден по данному %d", userId)));
         user.getMarketplaces().add(marketplace);
-        Users save = usersRepositories.save(user);
-        return modelMapper.map(save,UserFavoritesMarketplaceResponseDto.class);
+        User save = userRepositories.save(user);
+        return modelMapper.map(save, UsersFavoritesMarketplaceResponseDto.class);
     }
 }

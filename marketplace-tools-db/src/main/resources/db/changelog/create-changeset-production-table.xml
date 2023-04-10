@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                     http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="create_table_production" author="chmelev">
+
+        <createTable tableName="production">
+            <column name="production_id" type="bigint" autoIncrement="true">]
+            <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="count" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="marketplace_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_production_marketplace_id" referencedTableName="marketplace" referencedColumnNames="marketplace_id"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_production_user_id" referencedTableName="users" referencedColumnNames="user_id"/>
+            </column>
+            <column name="cost" type="double precision">
+                <constraints nullable="true"/>
+            </column>
+            <column name="overall_cost" type="double precision">
+                <constraints nullable="true"/>
+            </column>
+            <column name="profit_percentage" type="double precision">
+                <constraints nullable="true"/>
+            </column>
+            <column name="final_price" type="double precision">
+                <constraints nullable="true"/>
+            </column>
+
+            
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

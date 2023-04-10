@@ -1,15 +1,15 @@
 package ru.chmelev.service;
 
-import ru.chmelev.dto.users.UsersRequestDto;
-import ru.chmelev.dto.users.response.User;
-import ru.chmelev.dto.users.response.UserFavoritesMarketplaceResponseDto;
+import ru.chmelev.dto.users.request.UsersRequestDto;
+import ru.chmelev.dto.users.Users;
+import ru.chmelev.dto.users.response.UsersFavoritesMarketplaceResponseDto;
 import ru.chmelev.dto.users.response.UsersResponseDto;
 
 import java.util.List;
 
 public interface UsersService {
 
-    User createUsers(UsersRequestDto usersRequestDto);
+    Users createUsers(UsersRequestDto usersRequestDto);
 
     UsersResponseDto readById(Long id);
 
@@ -23,5 +23,5 @@ public interface UsersService {
 
     UsersResponseDto readByUserName(String userName);
 
-    UserFavoritesMarketplaceResponseDto addMarketplace(Long userId, Long marketplaceId);
+    UsersFavoritesMarketplaceResponseDto addMarketplace(Long userId, Long marketplaceId);
 }

@@ -3,8 +3,8 @@ package ru.chmelev.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import ru.chmelev.dto.marketplace.MarketplaceRequestDto;
-import ru.chmelev.dto.marketplace.UpdateContactsDto;
+import ru.chmelev.dto.marketplace.request.MarketplaceRequestDto;
+import ru.chmelev.dto.marketplace.request.UpdateContactsDto;
 import ru.chmelev.dto.marketplace.response.MarketplaceResponseDto;
 import ru.chmelev.entity.Marketplace;
 import ru.chmelev.exception.NoFoundException;
@@ -25,7 +25,6 @@ public class MarketplaceServiceImpl implements MarketplaceService {
         this.marketplaceRepository = marketplaceRepository;
         this.modelMapper = modelMapper;
     }
-
     @Override
     public MarketplaceResponseDto createMarketplace(MarketplaceRequestDto marketplaceRequestDto) {
         Marketplace forSave = modelMapper.map(marketplaceRequestDto, Marketplace.class);
@@ -33,7 +32,6 @@ public class MarketplaceServiceImpl implements MarketplaceService {
 
         return modelMapper.map(saved, MarketplaceResponseDto.class);
     }
-
     @Override
     public MarketplaceResponseDto readById(Long id) {
         Optional<Marketplace> byId = marketplaceRepository.findById(id);
@@ -41,7 +39,6 @@ public class MarketplaceServiceImpl implements MarketplaceService {
                 .orElseThrow(() -> new NoFoundException(String.format("Маркетплейс не найден по данному id %d", id)));
         return modelMapper.map(foundMarketplace, MarketplaceResponseDto.class);
     }
-
     @Override
     public MarketplaceResponseDto readByName(String name) {
         Optional<Marketplace> byName = marketplaceRepository.findByName(name);
@@ -51,7 +48,6 @@ public class MarketplaceServiceImpl implements MarketplaceService {
 
 
     }
-
     @Override
     public MarketplaceResponseDto update(Long id, MarketplaceRequestDto marketplaceRequestDto) {
         marketplaceRepository.findById(id)
@@ -62,7 +58,6 @@ public class MarketplaceServiceImpl implements MarketplaceService {
         return modelMapper.map(beforeUpdate, MarketplaceResponseDto.class);
 
     }
-
     @Override
     public List<MarketplaceResponseDto> readAll(String name) {
         List<Marketplace> all;
@@ -71,22 +66,17 @@ public class MarketplaceServiceImpl implements MarketplaceService {
         } else {
             String postgresLike = "%%%s%%".formatted(name);
             all = marketplaceRepository.findAllByNameLikeIgnoreCase(postgresLike);
-
         }
-
         return all.stream()
                 .map(marketplace -> modelMapper.map(marketplace, MarketplaceResponseDto.class))
                 .toList();
-
     }
-
     @Override
     public void deleteById(Long id) {
         marketplaceRepository.findById(id)
                 .orElseThrow(() -> new NoFoundException(String.format("Маркетплейс не найден по данному id %d", id)));
         marketplaceRepository.deleteById(id);
     }
-
     @Override
     public MarketplaceResponseDto updateContacts(Long id, UpdateContactsDto updateContactsDto) {
         Marketplace marketplace = marketplaceRepository.findById(id)
@@ -96,7 +86,5 @@ public class MarketplaceServiceImpl implements MarketplaceService {
         Marketplace afterUpdate = marketplaceRepository.save(marketplace);
 
         return modelMapper.map(afterUpdate, MarketplaceResponseDto.class);
-
     }
-
 }

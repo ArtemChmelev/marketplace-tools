@@ -1,9 +1,9 @@
-package ru.chmelev.controller;
+package ru.chmelev.controllers;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.chmelev.dto.users.UsersRequestDto;
+import ru.chmelev.dto.users.request.UsersRequestDto;
 
 
 public interface UsersController {

@@ -1,7 +1,7 @@
 package ru.chmelev.service;
 
-import ru.chmelev.dto.marketplace.MarketplaceRequestDto;
-import ru.chmelev.dto.marketplace.UpdateContactsDto;
+import ru.chmelev.dto.marketplace.request.MarketplaceRequestDto;
+import ru.chmelev.dto.marketplace.request.UpdateContactsDto;
 import ru.chmelev.dto.marketplace.response.MarketplaceResponseDto;
 
 import java.util.List;

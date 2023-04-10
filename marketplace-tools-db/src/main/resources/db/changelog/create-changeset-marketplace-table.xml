@@ -26,6 +26,9 @@
             <column name="inn" type="varchar(20)">
                 <constraints unique="true" nullable="false"/>
             </column>
+            <column name="commission" type="int">
+                <constraints nullable="false"/>
+            </column>
             <column name="is_work" type="boolean"/>
         </createTable>
     </changeSet>

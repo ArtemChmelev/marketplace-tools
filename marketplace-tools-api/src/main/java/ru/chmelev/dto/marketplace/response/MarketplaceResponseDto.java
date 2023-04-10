@@ -21,5 +21,7 @@ public class MarketplaceResponseDto {
 
     private String marketplaceInn;
 
+    private int commission;
+
     private boolean work;
 }

@@ -5,13 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.chmelev.dto.marketplace.response.MarketplaceResponseDto;
+import ru.chmelev.dto.users.Users;
 
 import java.time.LocalDateTime;
 import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserFavoritesMarketplaceResponseDto implements User {
+public class UsersFavoritesMarketplaceResponseDto implements Users {
 
     int id;
 
