@@ -16,7 +16,7 @@ import java.util.List;
 public class Marketplace {
 
     @ManyToMany(mappedBy = "marketplaces")
-    List<Users> users;
+    List<User> users;
 
     @Id
     @Column(name = "marketplace_id")
@@ -38,6 +38,9 @@ public class Marketplace {
 
     @Column(name = "inn")
     private String marketplaceInn;
+
+    @Column(name = "commission")
+    private Double commission;
 
     @Column(name = "is_work")
     private boolean work;
