@@ -1,10 +1,10 @@
-package ru.chmelev.controller;
+package ru.chmelev.controllers;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.chmelev.dto.marketplace.MarketplaceRequestDto;
-import ru.chmelev.dto.marketplace.UpdateContactsDto;
+import ru.chmelev.dto.marketplace.request.MarketplaceRequestDto;
+import ru.chmelev.dto.marketplace.request.UpdateContactsDto;
 import ru.chmelev.dto.marketplace.response.MarketplaceResponseDto;
 public interface MarketplaceController {
 

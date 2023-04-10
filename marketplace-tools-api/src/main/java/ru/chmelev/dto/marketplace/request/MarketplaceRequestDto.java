@@ -1,4 +1,4 @@
-package ru.chmelev.dto.marketplace;
+package ru.chmelev.dto.marketplace.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,7 +21,7 @@ public class MarketplaceRequestDto {
     @NotBlank(message = "Name должно быть заполнено")
     private String name;
 
-    @NotNull(message = "Type должен быть заполнен")
+    @NotNull(message = "Тип должен быть заполнен")
     private MarketplaceTypes marketplaceTypes;
 
     @Pattern(regexp = PHONE_NUMBER_REGEX,message = "Неправильный формат телефона")
@@ -33,6 +33,9 @@ public class MarketplaceRequestDto {
 
     @NotBlank(message = "Инн не может быть пустым")
     private String marketplaceInn;
+
+    @NotNull(message = "Комиссия должна быть указана")
+    private Integer commission;
 
     private boolean work;
 }
