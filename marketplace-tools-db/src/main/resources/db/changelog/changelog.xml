@@ -8,6 +8,9 @@
     <include file="create-changeset-users-table.xml" relativeToChangelogFile="true"/>
     <include file="create-changeset-marketplace-table.xml" relativeToChangelogFile="true"/>
     <include file="create-changeset-marketplace-users-table.xml" relativeToChangelogFile="true"/>
-
+    <include file="create-changeset-products-table.xml" relativeToChangelogFile="true"/>
+    <include file="alter-changeset-users-table.xml" relativeToChangelogFile="true"/>
+    <include file="alter-changeset-products-table.xml" relativeToChangelogFile="true"/>
+    <include file="create-changeset-production-table.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

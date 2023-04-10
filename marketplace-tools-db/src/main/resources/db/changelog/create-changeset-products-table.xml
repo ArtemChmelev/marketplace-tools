@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                     http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="create_table_products" author="chmelev">
+
+        <createTable tableName="products">
+
+            <column autoIncrement="true" name="product_id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name_product" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amount" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cost_price" type="bigint">
+            </column>
+            <column name="final_price" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+
+
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
