@@ -10,5 +10,6 @@ public class MarketPlaceTollsApp {
     public static void main(String[] args) {
         SpringApplication.run(MarketPlaceTollsApp.class,args);
 
+
     }
 }
